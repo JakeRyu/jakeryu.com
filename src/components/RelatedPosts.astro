@@ -1,0 +1,50 @@
+---
+import type { Related } from "../lib/translations";
+
+interface Props {
+  related: Related;
+}
+
+const { related } = Astro.props;
+---
+
+{
+  related.posts.length > 0 && (
+    <section class="related" aria-label="Related" data-related>
+      <p class="label">RELATED · {related.tags.map((tag) => `#${tag}`).join(" ")}</p>
+      {related.posts.map((post) => (
+        <p>
+          <a href={`/blog/${post.id}/`} hreflang={post.data.language} lang={post.data.language}>
+            {post.data.title}
+          </a>
+        </p>
+      ))}
+    </section>
+  )
+}
+
+<style>
+  .related {
+    margin-top: 8px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  p {
+    margin: 0 0 8px;
+  }
+  p:last-child {
+    margin: 0;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  a {
+    color: var(--ink);
+  }
+</style>
