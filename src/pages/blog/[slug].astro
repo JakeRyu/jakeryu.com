@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import Callout from "../../components/Callout.astro";
+import Outline from "../../components/Outline.astro";
 
 export async function getStaticPaths() {
   // Drafts show on the dev server only.
@@ -9,12 +11,32 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const { title, date, language, tags } = post.data;
 ---
 
+<script>
+  // Progressive enhancement: the buttons are hidden in the markup and shown
+  // once this script has run, including after view-transition swaps. The click
+  // is delegated so it survives those swaps too.
+  document.addEventListener("astro:page-load", () => {
+    for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy-code]")) button.hidden = false;
+  });
+  document.addEventListener("click", async (event) => {
+    const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>("[data-copy-code]") : null;
+    const code = button?.closest(".code-block")?.querySelector("pre")?.textContent;
+    if (!button || code == null) return;
+    try {
+      await navigator.clipboard.writeText(code);
+      button.textContent = "Copied";
+      setTimeout(() => (button.textContent = "Copy"), 2000);
+    } catch {}
+  });
+</script>
+
 <Base title={title} lang={language}>
   <div class="wrap">
+    <Outline headings={headings} />
     <article>
       <p class="endpoint" lang="en"><span class="badge">GET</span><span>/blog/{post.id}</span></p>
       <h1>{title}</h1>
@@ -24,7 +46,7 @@ const { title, date, language, tags } = post.data;
         {tags.length > 0 && <div><dt>tags</dt><dd>{tags.join(", ")}</dd></div>}
       </dl>
       <div class="prose">
-        <Content />
+        <Content components={{ Callout }} />
       </div>
     </article>
   </div>
@@ -35,10 +57,16 @@ const { title, date, language, tags } = post.data;
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 56px var(--page-padding) 104px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    align-items: flex-start;
   }
   article {
+    flex: 999 1 560px;
+    min-width: 0;
     max-width: 720px;
-    margin: 0 auto;
     padding: 48px 52px 56px;
     background: var(--surface);
     border: var(--border-width) solid var(--border);
@@ -106,7 +134,98 @@ const { title, date, language, tags } = post.data;
     height: auto;
     border-radius: var(--radius-s);
   }
+  .prose :global(.table-scroll) {
+    margin: 0 0 24px;
+    overflow-x: auto;
+    border: var(--border-width) solid var(--border);
+    border-radius: 10px;
+  }
+  .prose :global(table) {
+    min-width: 480px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .prose :global(th) {
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+    background: var(--ground);
+    border-bottom: var(--border-width) solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .prose :global(td) {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .prose :global(tr:last-child td) {
+    border-bottom: 0;
+  }
+  .prose :global(:not(pre) > code) {
+    padding: 1px 6px;
+    background: var(--ground);
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+  }
+  .prose :global(.code-block) {
+    margin: 0 0 24px;
+    border: var(--border-width) solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .prose :global(.code-header) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 6px 0 16px;
+    background: light-dark(#14202b, #26323d);
+    color: #c9d1da;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .prose :global(.code-header button) {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .prose :global(.code-header button:hover) {
+    text-decoration: underline;
+  }
+  .prose :global(.code-header button[hidden]) {
+    display: none;
+  }
+  /* The Shiki themes arrive as --shiki-light / --shiki-dark variables; light-dark()
+     picks one from the page's colour scheme, so the manual toggle is followed too. */
+  .prose :global(pre.astro-code) {
+    margin: 0;
+    padding: 18px 20px;
+    overflow-x: auto;
+    background: light-dark(#f6f8fa, #0e151c);
+    color: light-dark(var(--shiki-light), var(--shiki-dark));
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .prose :global(pre.astro-code span) {
+    color: light-dark(var(--shiki-light), var(--shiki-dark));
+  }
   @media (max-width: 767px) {
+    .prose :global(pre.astro-code) {
+      padding: 14px 16px;
+      font-size: 13px;
+    }
     .wrap {
       padding: 24px 16px 64px;
     }
