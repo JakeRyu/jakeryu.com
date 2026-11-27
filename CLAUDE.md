@@ -12,6 +12,17 @@ Jake Ryu's personal site, jakeryu.com. It is a static Astro site that replaces t
   - `~/Projects/velite-blog` (`JakeRyu/velite-blog`): the six published posts in `content/blog/` (skip `archive/`), their image in `public/postImages/`, and the About text in `app/about/page.tsx`.
   - `~/Projects/portfolio` (`JakeRyu/portfolio`): portfolio data in `lib/data.ts`, plus project images in `public/`. The CV (`public/CV.pdf` there) is deliberately not migrated: the CV is only published with Jake's explicit consent.
 
+## Development
+
+- **Package manager:** pnpm (`packageManager` in `package.json`). If `pnpm` is not on PATH, use `npx -y pnpm@12.23.0 <command>`. Run `pnpm check`, `pnpm test` and `pnpm build` before opening a PR; CI runs the same three.
+- **Content:** one folder per collection under `CONTENT_DIR` (default `src/content`): `blog/<slug>/index.mdx` for posts, `<collection>/*.yaml` for portfolio data. A new collection is one more entry in `src/content.config.ts`, reading `${contentDir}/<name>`. Real folders stay empty until the content migration.
+- **Tests:** one seam, the built site. `tests/support/build-fixture-site.ts` builds once against `tests/fixtures/content` and tests assert on the built HTML, CSS and files (`page()`, `fileExists()`, `filesWithExtension()` in `tests/support/built-site.ts`). Failing-build cases use `buildSite()` with a fixture under `tests/fixtures/invalid/<case>/`. Other agents add fixtures in parallel, so assert on specific slugs, never on total counts. Test files run one at a time (`fileParallelism: false`) because concurrent Astro builds share `.astro/`.
+- **Test builds are production builds:** `buildSite()` sets `NODE_ENV=production`, because Vitest sets `NODE_ENV=test`, which Astro would treat as a non-production build (drafts included).
+- **Translations:** all translation-group logic lives in `src/lib/translations.ts`. Pages never group posts themselves.
+- **Dev server:** `CONTENT_DIR=$PWD/tests/fixtures/content pnpm dev` shows the fixture posts and portfolio data. When several agents run at once, give each its own port.
+- **Deployment:** Cloudflare Workers Static Assets (`wrangler.jsonc`), built from Git: `main` is production, other branches get preview URLs.
+- **Done means checked by eye:** visual fidelity (light, dark, mobile) is not automated; say in the PR what was and was not checked in a browser.
+
 ## Agent skills
 
 ### Issue tracker

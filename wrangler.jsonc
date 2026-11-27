@@ -3,7 +3,9 @@
   "compatibility_date": "2026-11-27",
   // Purely static: Workers Static Assets serves the build output, no Worker script.
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    // Workers do not serve 404.html on their own; without this, unknown URLs get Cloudflare's plain 404.
+    "not_found_handling": "404-page"
   },
   // Branch builds on Cloudflare run `wrangler preview`, which requires this block (it may be empty).
   "previews": {}
