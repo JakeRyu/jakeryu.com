@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse, type HTMLElement } from "node-html-parser";
 import { inject } from "vitest";
@@ -16,4 +16,14 @@ export function filesWithExtension(extension: string): string[] {
   return readdirSync(root, { recursive: true, encoding: "utf8" })
     .filter((name) => name.endsWith(extension))
     .map((name) => readFileSync(join(root, name), "utf8"));
+}
+
+// True when a page was built at the given URL path.
+export function pageExists(urlPath: string): boolean {
+  return existsSync(join(inject("outDir"), urlPath, "index.html"));
+}
+
+// True when a built file exists at the given URL path, e.g. "/_astro/x.png".
+export function fileExists(urlPath: string): boolean {
+  return existsSync(join(inject("outDir"), urlPath));
 }
