@@ -4,7 +4,9 @@ import Base from "../../layouts/Base.astro";
 import Callout from "../../components/Callout.astro";
 import Outline from "../../components/Outline.astro";
 import TranslationLink from "../../components/TranslationLink.astro";
-import { translationsOf } from "../../lib/translations";
+import { tagSlug } from "../../lib/tags";
+import RelatedPosts from "../../components/RelatedPosts.astro";
+import { relatedTo, translationsOf } from "../../lib/translations";
 import { site } from "../../site";
 
 export async function getStaticPaths() {
@@ -17,6 +19,7 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const { title, date, language, tags, translationKey } = post.data;
 const translations = await translationsOf(post);
+const related = await relatedTo(post);
 ---
 
 <script>
@@ -52,7 +55,7 @@ const translations = await translationsOf(post);
       <dl lang="en">
         <div><dt>date</dt><dd><time datetime={date.toISOString().slice(0, 10)}>{date.toISOString().slice(0, 10)}</time></dd></div>
         <div><dt>lang</dt><dd>{language}</dd></div>
-        {tags.length > 0 && <div><dt>tags</dt><dd>{tags.join(", ")}</dd></div>}
+        {tags.length > 0 && <div><dt>tags</dt><dd>{tags.map((tag, i) => <>{i > 0 && ", "}<a href={`/blog/tags/${tagSlug(tag)}/`}>{tag}</a></>)}</dd></div>}
       </dl>
       <div class="prose">
         <Content components={{ Callout }} />
@@ -60,7 +63,7 @@ const translations = await translationsOf(post);
     </article>
     <aside>
       <TranslationLink {language} {translationKey} {translations} />
-      <!-- The related-posts box (#8) goes here. -->
+      <RelatedPosts {related} />
     </aside>
   </div>
 </Base>
