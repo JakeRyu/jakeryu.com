@@ -30,7 +30,7 @@ describe("real experience", () => {
     ["Software Developer", "ByBox (Homebased, UK)", 2017],
     ["Senior Engineer", "Moneybox (London, UK)", 2018],
     ["Senior Software Engineer", "Adserve (Homebased, UK)", 2020],
-    ["Lead Developer", "Barnett Waddingham (Amersham, UK)", 2021],
+    ["Lead Developer", "Howden, formerly Barnett Waddingham (London, UK)", 2021],
   ] as const;
 
   it("has six roles on the timeline", () => {
@@ -133,8 +133,17 @@ describe("real About text", () => {
     expect(section("about")).toContain("English Premier League (EPL)");
   });
 
-  it("links Barnett Waddingham", () => {
-    expect(home.querySelector('#about a[href="https://www.barnett-waddingham.co.uk/"]')).not.toBeNull();
+  it("links Howden as the current employer", () => {
+    expect(home.querySelector('#about a[href="https://www.howdengroup.com"]')?.text.trim()).toBe("Howden");
+  });
+
+  it("describes Howden as a global insurance group and mentions its former name", () => {
+    expect(section("about")).toContain("(formerly Barnett Waddingham), a global insurance group");
+  });
+
+  it("mentions Barnett Waddingham only as the former name", () => {
+    const text = home.text.replace(/\s+/g, " ");
+    expect(text.match(/Barnett Waddingham/g)).toHaveLength(text.match(/formerly Barnett Waddingham/g)?.length ?? -1);
   });
 });
 
