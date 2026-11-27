@@ -12,10 +12,6 @@ Jake Ryu's personal site, jakeryu.com. It is a static Astro site that replaces t
   - `~/Projects/velite-blog` (`JakeRyu/velite-blog`): the six published posts in `content/blog/` (skip `archive/`), their image in `public/postImages/`, and the About text in `app/about/page.tsx`.
   - `~/Projects/portfolio` (`JakeRyu/portfolio`): portfolio data in `lib/data.ts`, plus project images and `CV.pdf` in `public/`.
 
-## Status
-
-No application code yet. Next step: run `/to-tickets` on issue #1. Remove this section once the tickets exist, because the issue tracker then shows progress.
-
 ## Agent skills
 
 ### Issue tracker
