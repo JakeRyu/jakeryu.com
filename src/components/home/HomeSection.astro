@@ -1,0 +1,46 @@
+---
+// Shared frame for the home page's sections: anchor, heading with optional mono label.
+interface Props {
+  id: string;
+  title: string;
+  label?: string;
+}
+
+const { id, title, label } = Astro.props;
+---
+
+<section {id}>
+  <h2>{title}{label && <span class="label"> / {label}</span>}</h2>
+  <slot />
+</section>
+
+<style>
+  section {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding) 88px;
+    scroll-margin-top: 16px;
+  }
+  h2 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  @media (max-width: 767px) {
+    section {
+      padding: 0 20px 48px;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+  }
+</style>

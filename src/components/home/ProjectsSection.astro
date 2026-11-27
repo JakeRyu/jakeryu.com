@@ -1,0 +1,136 @@
+---
+import { getCollection } from "astro:content";
+import HomeSection from "./HomeSection.astro";
+
+// File names order the entries (e.g. 01-feature-toggles.yaml).
+const projects = (await getCollection("projects")).sort((a, b) => a.id.localeCompare(b.id));
+---
+
+{
+  projects.length > 0 && (
+    <HomeSection id="projects" title="Projects" label="systems">
+      <div class="frame">
+        <table>
+          <thead>
+            <tr>
+              <th>System</th>
+              <th>What it does</th>
+              <th>My role</th>
+              <th>Stack</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.map(({ data }) => (
+              <tr>
+                <td class="title">{data.title}</td>
+                <td class="description">{data.description}</td>
+                <td class="role">{data.role}</td>
+                <td class="stack">{data.stack.join(", ")}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </HomeSection>
+  )
+}
+
+<style>
+  .frame {
+    overflow-x: auto;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 12px;
+  }
+  table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: var(--border-width) solid var(--border);
+  }
+  td {
+    padding: 18px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--hairline);
+  }
+  th:first-child,
+  td:first-child {
+    padding-left: 24px;
+  }
+  th:last-child,
+  td:last-child {
+    padding-right: 24px;
+  }
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .title {
+    font-weight: 600;
+  }
+  .description {
+    color: var(--muted-strong);
+  }
+  .stack {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted-strong);
+  }
+
+  /* Below tablet width each row becomes a card: title, description, "role · stack". */
+  @media (max-width: 767px) {
+    .frame {
+      overflow: visible;
+      background: none;
+      border: 0;
+    }
+    table,
+    tbody {
+      display: block;
+      min-width: 0;
+    }
+    thead {
+      display: none;
+    }
+    tr {
+      display: block;
+      margin-bottom: 12px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: var(--border-width) solid var(--border);
+      border-radius: 12px;
+    }
+    td,
+    td:first-child,
+    td:last-child {
+      display: block;
+      padding: 0;
+      border: 0;
+    }
+    .title {
+      font-size: 17px;
+    }
+    .description {
+      margin: 6px 0 10px;
+    }
+    td.role,
+    td.stack {
+      display: inline;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .stack::before {
+      content: " · ";
+    }
+  }
+</style>

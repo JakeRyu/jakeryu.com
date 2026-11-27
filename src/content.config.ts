@@ -24,4 +24,37 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// Portfolio data: one YAML file per entry (or per skill group). The file name is the id.
+const yamlEntries = (collection: string) => glob({ pattern: "*.yaml", base: `${contentDir}/${collection}` });
+
+const projects = defineCollection({
+  loader: yamlEntries("projects"),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      role: z.string(),
+      stack: z.array(z.string()).min(1),
+      image: image().optional(),
+    }),
+});
+
+const skills = defineCollection({
+  loader: yamlEntries("skills"),
+  schema: z.object({
+    group: z.string(),
+    items: z.array(z.string()).min(1),
+  }),
+});
+
+const publications = defineCollection({
+  loader: yamlEntries("publications"),
+  schema: z.object({ title: z.string(), year: z.number().int() }),
+});
+
+const certifications = defineCollection({
+  loader: yamlEntries("certifications"),
+  schema: z.object({ title: z.string(), year: z.number().int() }),
+});
+
+export const collections = { blog, projects, skills, publications, certifications };
