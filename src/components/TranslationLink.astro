@@ -2,12 +2,13 @@
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
+  title: string;
   language: CollectionEntry<"blog">["data"]["language"];
   translationKey: string | undefined;
   translations: CollectionEntry<"blog">[];
 }
 
-const { language, translationKey, translations } = Astro.props;
+const { title, language, translationKey, translations } = Astro.props;
 ---
 
 {
@@ -17,6 +18,7 @@ const { language, translationKey, translations } = Astro.props;
       <div class="diagram">
         <div class="node this">
           <span class="role">«this post» · {language}</span>
+          <span class="title" lang={language}>{title}</span>
         </div>
         <span class="key">{translationKey}</span>
         {translations.map((translation) => (
@@ -72,8 +74,11 @@ const { language, translationKey, translations } = Astro.props;
     background: var(--ink);
     color: var(--surface);
   }
+  .this .title {
+    overflow-wrap: anywhere;
+  }
   .this .role {
-    color: var(--post-fg);
+    color: light-dark(#ffb088, #a6390c);
   }
   .other {
     background: var(--surface);
