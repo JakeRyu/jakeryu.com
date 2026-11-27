@@ -33,8 +33,7 @@ const entries = Astro.props.headings.filter((heading) => heading.depth === 2);
 
 <style>
   .outline {
-    flex: 1 1 180px;
-    max-width: 200px;
+    padding-top: 8px;
     font-size: 14px;
     line-height: 1.6;
   }
@@ -69,8 +68,7 @@ const entries = Astro.props.headings.filter((heading) => heading.depth === 2);
   }
   @media (max-width: 1023px) {
     .outline {
-      flex-basis: 100%;
-      max-width: none;
+      padding-top: 0;
       border: 1px solid var(--hairline);
       border-radius: var(--radius-s);
       background: var(--surface);
