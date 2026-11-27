@@ -1,0 +1,9 @@
+title: "Team Retrospective Board"
+description: "A custom retro board I built solo when our Trello hit licence limits. AI-assisted development with Claude Code, applied responsibly."
+role: "Solo developer"
+stack:
+  - "Next.js"
+  - "Cosmos DB"
+  - "React"
+  - "Claude Code"
+image: "./retro-board.png"

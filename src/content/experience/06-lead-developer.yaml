@@ -1,0 +1,8 @@
+title: "Lead Developer"
+organisation: "Barnett Waddingham (Amersham, UK)"
+chapter: "The leadership and modernisation chapter"
+description: "On the Hyperion team I lead the modernisation of legacy pension administration systems on .NET, React, and Azure — raising engineering standards, driving cloud-native adoption, and delivering business-impacting features end-to-end. I authored the REST API standards now adopted company-wide, drove the move to event-driven architecture via Azure Service Bus, and led adoption of App Configuration, Function Apps, Key Vault, and Feature Flags. Beyond technical work, I mentor the team on modern React patterns and Cypress testing."
+takeaway:
+  label: "What this chapter is teaching me"
+  text: "the patience and precision needed to modernise legacy systems without breaking them — and how to build infrastructure (REST API standards, Feature Toggle Platform, CI/CD pipelines) that other teams across the company can build on."
+start: 2021

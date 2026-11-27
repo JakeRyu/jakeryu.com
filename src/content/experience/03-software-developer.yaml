@@ -1,0 +1,9 @@
+title: "Software Developer"
+organisation: "ByBox (Homebased, UK)"
+chapter: "The discipline chapter"
+description: "My first role in a microservice-based environment. ByBox runs a nationwide network of electronic lockers where delivery drivers deposit and collect items via mobile. I worked full-stack across distributed services — backend in ASP.NET Web API with NServiceBus for inter-service messaging, and a React + Redux operations dashboard. The team's strict TDD discipline and SpecFlow specifications, written with business analysts before any code, drove every behavioural test end-to-end."
+takeaway:
+  label: "What I took forward"
+  text: "testing as a mindset, not a phase — and the SpecFlow/BDD habit of writing behaviour with business analysts before writing code."
+start: 2017
+end: 2018

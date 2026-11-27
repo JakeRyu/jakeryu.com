@@ -1,0 +1,9 @@
+title: "Web Developer"
+organisation: "Seoul, South Korea"
+chapter: "The apprentice chapter"
+description: "Started out working broadly across web development, databases, and Windows servers — gaining breadth before depth. The most memorable delivery was an ERP project for Lotte Duty Free Shop, Korea's largest duty-free retailer, built with ASP.NET, IIS, MS SQL Server, and ActiveX."
+takeaway:
+  label: "What I took forward"
+  text: "breadth across web, databases, and servers — and the confidence that comes from shipping production systems for real clients from day one."
+start: 2000
+end: 2006

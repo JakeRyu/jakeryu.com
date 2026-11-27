@@ -1,0 +1,7 @@
+title: "Pledge Service Integration"
+description: "Integrated a third-party 'plant a tree' pledge triggered when members opt out of paper communications. Azure Functions with persistent retry."
+role: "Backend lead"
+stack:
+  - "Azure Functions"
+  - "ASP.NET Core"
+image: "./pledge-service.png"

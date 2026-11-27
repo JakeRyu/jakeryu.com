@@ -1,0 +1,9 @@
+title: "Senior Software Engineer"
+organisation: "Adserve (Homebased, UK)"
+chapter: "The product engineering chapter"
+description: "Full-stack delivery for Adserve Studio, a global supply-side advertising platform. The team's deliberate policy of avoiding third-party component libraries was an unusual constraint — every React component (sortable/filterable data grids, foldable accordions, heatmap grids) had to be built from scratch with hooks, context, and reducers. Backend on ASP.NET Core with Clean Architecture and CQRS, deployed on AWS via Jenkins."
+takeaway:
+  label: "What I took forward"
+  text: "deep practical experience in component design, state management with Context API and reducers, and an appreciation for the trade-offs in choosing build-vs-buy at the component level."
+start: 2020
+end: 2021
