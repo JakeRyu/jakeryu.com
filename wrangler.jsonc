@@ -4,5 +4,7 @@
   // Purely static: Workers Static Assets serves the build output, no Worker script.
   "assets": {
     "directory": "./dist"
-  }
+  },
+  // Branch builds on Cloudflare run `wrangler preview`, which requires this block (it may be empty).
+  "previews": {}
 }
