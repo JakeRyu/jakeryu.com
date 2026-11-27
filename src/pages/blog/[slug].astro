@@ -3,6 +3,9 @@ import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import Callout from "../../components/Callout.astro";
 import Outline from "../../components/Outline.astro";
+import TranslationLink from "../../components/TranslationLink.astro";
+import { translationsOf } from "../../lib/translations";
+import { site } from "../../site";
 
 export async function getStaticPaths() {
   // Drafts show on the dev server only.
@@ -12,7 +15,8 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
-const { title, date, language, tags } = post.data;
+const { title, date, language, tags, translationKey } = post.data;
+const translations = await translationsOf(post);
 ---
 
 <script>
@@ -35,6 +39,11 @@ const { title, date, language, tags } = post.data;
 </script>
 
 <Base title={title} lang={language}>
+  {
+    translations.map((translation) => (
+      <link slot="head" rel="alternate" hreflang={translation.data.language} href={`${site.origin}/blog/${translation.id}/`} />
+    ))
+  }
   <div class="wrap">
     <Outline headings={headings} />
     <article>
@@ -49,6 +58,10 @@ const { title, date, language, tags } = post.data;
         <Content components={{ Callout }} />
       </div>
     </article>
+    <aside>
+      <TranslationLink {language} {translationKey} {translations} />
+      <!-- The related-posts box (#8) goes here. -->
+    </aside>
   </div>
 </Base>
 
@@ -73,6 +86,13 @@ const { title, date, language, tags } = post.data;
     border-radius: var(--radius-l);
     font-size: 17px;
     line-height: 1.85;
+  }
+  aside {
+    flex: 1 1 240px;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
   .endpoint {
     margin: 0 0 20px;
