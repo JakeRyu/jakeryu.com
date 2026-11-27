@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  language: CollectionEntry<"blog">["data"]["language"];
+  translationKey: string | undefined;
+  translations: CollectionEntry<"blog">[];
+}
+
+const { language, translationKey, translations } = Astro.props;
+---
+
+{
+  translations.length > 0 && (
+    <section class="translation" aria-label="Translation" lang="en">
+      <p class="label">CONTEXT</p>
+      <div class="diagram">
+        <div class="node this">
+          <span class="role">«this post» · {language}</span>
+        </div>
+        <span class="key">{translationKey}</span>
+        {translations.map((translation) => (
+          <a class="node other" href={`/blog/${translation.id}/`} hreflang={translation.data.language} data-translation-link>
+            <span class="role">«translation» · {translation.data.language}</span>
+            <span class="title" lang={translation.data.language}>
+              {translation.data.title} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .translation {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    line-height: 1.5;
+  }
+  .label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .node {
+    box-sizing: border-box;
+    min-height: 76px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .this {
+    background: var(--ink);
+    color: var(--surface);
+  }
+  .this .role {
+    color: var(--post-fg);
+  }
+  .other {
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .other .role {
+    color: var(--muted);
+  }
+  .other:hover .title {
+    text-decoration: underline;
+  }
+  .key {
+    align-self: flex-start;
+    margin-left: 129px;
+    padding: 12px 0 12px 9px;
+    border-left: var(--border-width) dashed var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+</style>

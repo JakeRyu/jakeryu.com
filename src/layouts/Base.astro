@@ -21,6 +21,7 @@ const { title, lang = "en" } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <slot name="head" />
     <title>{title ? `${title} · ${site.name}` : site.name}</title>
     <!-- Applies a stored theme choice before first paint, and again after each page swap. -->
     <script is:inline>
