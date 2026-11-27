@@ -11,10 +11,14 @@ import { site } from "../site";
 interface Props {
   title?: string;
   lang?: "en" | "ko";
+  // Path of the page's own Open Graph image; pages without one share the default.
+  ogImage?: string;
 }
 
-const { title, lang = "en" } = Astro.props;
+const { title, lang = "en", ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.origin).href;
+const image = new URL(ogImage ?? "/og-default.png", site.origin).href;
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
 ---
 
 <!doctype html>
@@ -23,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, site.origin).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <slot name="head" />
-    <title>{title ? `${title} · ${site.name}` : site.name}</title>
+    <title>{pageTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <!-- Applies a stored theme choice before first paint, and again after each page swap. -->
     <script is:inline>
@@ -40,6 +44,11 @@ const canonical = new URL(Astro.url.pathname, site.origin).href;
     </script>
     <ClientRouter />
     <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:type" content={ogImage ? "article" : "website"} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={image} />
     <!-- Cloudflare Web Analytics: cookie-free. It watches history changes itself, so it needs no data-astro-rerun after view transitions. -->
     <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: site.analyticsToken })}></script>
   </head>

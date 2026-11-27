@@ -38,7 +38,7 @@ const translations = await translationsOf(post);
   });
 </script>
 
-<Base title={title} lang={language}>
+<Base title={title} lang={language} ogImage={`/og/${post.id}.png`}>
   {
     translations.map((translation) => (
       <link slot="head" rel="alternate" hreflang={translation.data.language} href={`${site.origin}/blog/${translation.id}/`} />
