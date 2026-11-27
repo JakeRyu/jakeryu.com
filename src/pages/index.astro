@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import { site } from "../site";
 import HeroLinks from "../components/home/HeroLinks.astro";
 import SystemDiagram from "../components/home/SystemDiagram.astro";
+import AboutSection from "../components/home/AboutSection.astro";
 import LatestPosts from "../components/home/LatestPosts.astro";
 import TimelineSection from "../components/home/TimelineSection.astro";
 import ProjectsSection from "../components/home/ProjectsSection.astro";
@@ -22,6 +23,7 @@ import PublicationsSection from "../components/home/PublicationsSection.astro";
   </section>
 
   <!-- Section slots: each ticket adds its own component here, in page order. -->
+  <AboutSection />
   <LatestPosts />
   <ProjectsSection />
   <SkillsSection />

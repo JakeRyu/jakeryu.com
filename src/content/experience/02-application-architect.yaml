@@ -1,0 +1,9 @@
+title: "Application Architect"
+organisation: "Hyundai Motor UK"
+chapter: "The foundation chapter"
+description: "Eleven years of full-cycle architecture across the UK dealer network, marketing, sales, finance, and import operations — many projects replacing paper-based processes with digital ones. Local stack was .NET; global projects integrated SAP ERP and Oracle CRM. Notable deliveries included a vehicle registration system in collaboration with the DVLA and a mobile inventory app for the import centre, for which I introduced the team's first RESTful API."
+takeaway:
+  label: "What I took forward"
+  text: "a deep instinct for translating business problems into technical solutions, and an early conviction that good software is measured by how it changes the work, not how clever the code is."
+start: 2006
+end: 2017

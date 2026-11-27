@@ -1,0 +1,8 @@
+title: "Feature Toggle Platform"
+description: "Rolled out feature toggles across the entire pension administration solution, enabling safe and targeted releases."
+role: "Sole developer"
+stack:
+  - ".NET Framework 4.7.2 – .NET 8"
+  - "Azure App Configuration"
+  - "Feature Flags"
+image: "./feature-flags.png"

@@ -41,6 +41,11 @@ const experience = defineCollection({
   }),
 });
 
+// The About text: one Markdown entry, rendered in the home page's About section.
+const about = defineCollection({
+  loader: glob({ pattern: "*.md", base: `${contentDir}/about` }),
+});
+
 const projects = defineCollection({
   loader: yamlEntries("projects"),
   schema: ({ image }) =>
@@ -71,4 +76,4 @@ const certifications = defineCollection({
   schema: z.object({ title: z.string(), year: z.number().int() }),
 });
 
-export const collections = { blog, experience, projects, skills, publications, certifications };
+export const collections = { blog, about, experience, projects, skills, publications, certifications };

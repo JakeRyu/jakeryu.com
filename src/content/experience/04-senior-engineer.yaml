@@ -1,0 +1,9 @@
+title: "Senior Engineer"
+organisation: "Moneybox (London, UK)"
+chapter: "The cloud and scale chapter"
+description: "At Moneybox I built the backend of a regulated UK savings and investment platform on Azure, where every line of code touched customer money. I led batch interest calculation engines for 95-Day Notice Accounts and Cash Lifetime ISAs, handling edge cases like early withdrawals and ISA allowance boundaries. Built on Azure Event Hub and Azure SQL with detailed error logging and recoverable failure handling, deployed through TeamCity and Octopus."
+takeaway:
+  label: "What I took forward"
+  text: "large-volume batch processing, detailed error logging, recoverable failure handling, and a healthy respect for regulated environments where silent failures aren't an option."
+start: 2018
+end: 2020

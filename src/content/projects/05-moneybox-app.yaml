@@ -1,0 +1,9 @@
+title: "Moneybox App"
+description: "Moneybox is a mobile app that simplifies saving and investing. As a platform developer, I created modules for batch processing calculations."
+role: "Platform developer"
+stack:
+  - "ASP.NET Web API"
+  - "Native App"
+  - "Azure"
+  - "SQL Server"
+image: "./moneybox-app.png"

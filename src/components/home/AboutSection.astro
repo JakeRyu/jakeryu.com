@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from "astro:content";
+import HomeSection from "./HomeSection.astro";
+
+// One Markdown entry holds the About text.
+const [entry] = await getCollection("about");
+const { Content } = entry ? await render(entry) : { Content: undefined };
+---
+
+{
+  Content && (
+    <HomeSection id="about" title="About" label="the person">
+      <div class="prose">
+        <Content />
+      </div>
+    </HomeSection>
+  )
+}
+
+<style>
+  .prose {
+    max-width: 720px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--muted-strong);
+  }
+  .prose :global(p) {
+    margin: 0 0 16px;
+  }
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(a) {
+    color: var(--accent-text);
+  }
+  .prose :global(strong) {
+    color: var(--ink);
+  }
+</style>

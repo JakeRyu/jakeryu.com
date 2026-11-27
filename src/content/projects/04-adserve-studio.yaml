@@ -1,0 +1,9 @@
+title: "Adserve Studio"
+description: "A collection of SPAs offers comprehensive audio planning, trafficking, and revenue optimization. I worked as a full-stack developer."
+role: "Full-stack developer"
+stack:
+  - "ASP.NET Web API"
+  - "React"
+  - "AWS"
+  - "PostgreSQL"
+image: "./adserve-studio.png"
