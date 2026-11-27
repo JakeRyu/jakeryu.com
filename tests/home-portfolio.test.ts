@@ -47,10 +47,10 @@ describe("home page publications and certifications", () => {
 });
 
 describe("home page links", () => {
-  it("links the CV download to a file that exists in the build", () => {
-    const href = page("/").querySelector("main a[download]")?.getAttribute("href");
-    expect(href).toBe("/CV.pdf");
-    expect(fileExists(href!)).toBe(true);
+  // The CV is only published with Jake's explicit consent, so the site offers no download.
+  it("does not offer a CV download", () => {
+    expect(page("/").querySelector("main a[download]")).toBeNull();
+    expect(fileExists("/CV.pdf")).toBe(false);
   });
 
   it.each([

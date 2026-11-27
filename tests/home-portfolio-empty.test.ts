@@ -15,7 +15,7 @@ describe("home page with no portfolio data", () => {
       for (const id of ["projects", "skills", "publications"]) {
         expect(home.querySelector(`#${id}`), id).toBeNull();
       }
-      expect(home.querySelector("main a[download]")).not.toBeNull();
+      expect(home.querySelector(`main a[href="https://github.com/JakeRyu"]`)).not.toBeNull();
     } finally {
       rmSync(build.outDir, { recursive: true, force: true });
     }

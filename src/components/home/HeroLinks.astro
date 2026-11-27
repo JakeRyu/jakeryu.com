@@ -9,8 +9,7 @@ const links = [
 ---
 
 <div class="links">
-  <a class="primary" href={site.cv} download>Download CV</a>
-  {links.map((link) => <a class="secondary" href={link.href}>{link.label}</a>)}
+  {links.map((link) => <a href={link.href}>{link.label}</a>)}
 </div>
 
 <style>
@@ -32,20 +31,13 @@ const links = [
     border-radius: var(--radius-s);
     text-decoration: none;
   }
-  .primary {
-    background: var(--ink);
-    color: var(--ground);
-  }
-  .secondary {
+  a {
     background: var(--surface);
     border: var(--border-width) solid var(--border);
     color: var(--ink);
   }
   a:hover {
     color: var(--accent-text);
-  }
-  .primary:hover {
-    color: var(--accent);
   }
   @media (max-width: 767px) {
     .links {

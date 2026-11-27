@@ -7,5 +7,4 @@ export const site = {
     x: "https://x.com/jakeryu",
     email: "mailto:jake@jakeryu.com",
   },
-  cv: "/CV.pdf",
 } as const;

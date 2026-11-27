@@ -10,7 +10,7 @@ Jake Ryu's personal site, jakeryu.com. It is a static Astro site that replaces t
 - **Design:** direction F, "System Map", on the design canvas https://claude.ai/artifact/BNTfkudqMLQdCnR38mgpzN. It has light, dark and mobile artboards. Directions A–E there are rejected alternatives. Open the canvas with the Artifact tool.
 - **Content to migrate:** two read-only sources. Copy from them and never edit them.
   - `~/Projects/velite-blog` (`JakeRyu/velite-blog`): the six published posts in `content/blog/` (skip `archive/`), their image in `public/postImages/`, and the About text in `app/about/page.tsx`.
-  - `~/Projects/portfolio` (`JakeRyu/portfolio`): portfolio data in `lib/data.ts`, plus project images and `CV.pdf` in `public/`.
+  - `~/Projects/portfolio` (`JakeRyu/portfolio`): portfolio data in `lib/data.ts`, plus project images in `public/`. The CV (`public/CV.pdf` there) is deliberately not migrated: the CV is only published with Jake's explicit consent.
 
 ## Agent skills
 
