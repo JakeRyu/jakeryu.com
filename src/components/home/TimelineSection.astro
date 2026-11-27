@@ -1,0 +1,175 @@
+---
+import { getCollection } from "astro:content";
+import HomeSection from "./HomeSection.astro";
+
+// Ordered by start year; file names break ties (e.g. 01-first-job.yaml).
+const entries = (await getCollection("experience")).sort((a, b) => a.data.start - b.data.start || a.id.localeCompare(b.id));
+
+// A role without an end year is the current one and runs to the build year.
+const buildYear = new Date().getFullYear();
+const firstYear = entries[0]?.data.start ?? buildYear;
+const span = Math.max(buildYear - firstYear, 1);
+const percent = (years: number) => Math.round((years / span) * 10000) / 100;
+
+const roles = entries.map(({ data }, index) => {
+  const end = data.end ?? buildYear;
+  return {
+    ...data,
+    number: index + 1,
+    current: data.end === undefined,
+    left: percent(data.start - firstYear),
+    width: percent(end - data.start),
+  };
+});
+
+// Year axis: a label under each start year, skipping any that would crowd the previous one or "now".
+const minGap = 6;
+const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[index - 1].left >= minGap && 100 - role.left >= minGap));
+---
+
+{
+  roles.length > 0 && (
+    <HomeSection id="experience" title="Experience" label={`timeline ${firstYear} → now`}>
+      <div class="frame">
+        <div class="bar" aria-hidden="true">
+          {roles.map((role) => (
+            <span class="segment" data-current={role.current || undefined} style={`left: ${role.left}%; width: ${role.width}%`}>
+              {role.number}
+            </span>
+          ))}
+        </div>
+        <div class="axis" aria-hidden="true">
+          {ticks.map((role) => (
+            <span class:list={["tick", { first: role.left === 0 }]} style={`left: ${role.left}%`}>
+              {role.start}
+            </span>
+          ))}
+          <span class="tick now">now</span>
+        </div>
+        <ol class="legend">
+          {roles.map((role) => (
+            <li>
+              <span class="number">{role.number} ·</span> <strong>{role.title}</strong>, {role.organisation}
+              <span class="chapter">
+                {role.start} — {role.chapter}
+              </span>
+              <span class="description">{role.description}</span>
+              <span class="takeaway">
+                {role.takeaway.label}: {role.takeaway.text}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </HomeSection>
+  )
+}
+
+<style>
+  .frame {
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px 24px;
+  }
+  .bar {
+    position: relative;
+    height: 48px;
+    border: var(--border-width) solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .segment {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hairline);
+    border-right: var(--border-width) solid var(--border);
+    overflow: hidden;
+  }
+  .segment:nth-child(even) {
+    background: color-mix(in srgb, var(--hairline), var(--ink) 12%);
+  }
+  .segment[data-current] {
+    background: var(--accent);
+    border-right: 0;
+    color: #14202b;
+  }
+  .axis {
+    position: relative;
+    height: 24px;
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .tick {
+    position: absolute;
+    transform: translateX(-50%);
+  }
+  .tick.first {
+    transform: none;
+  }
+  .tick.now {
+    right: 0;
+    transform: none;
+  }
+  .legend {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px 32px;
+    font-size: 15px;
+  }
+  .number {
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+  .chapter,
+  .description,
+  .takeaway {
+    display: block;
+    color: var(--muted);
+  }
+  .chapter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .description,
+  .takeaway {
+    font-size: 14px;
+  }
+
+  /* Below tablet width the legend is a single list, newest first. */
+  @media (max-width: 767px) {
+    .frame {
+      padding: 18px 16px;
+    }
+    .bar {
+      height: 40px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+    .axis {
+      height: 20px;
+      margin-top: 4px;
+      font-size: 10px;
+    }
+    .legend {
+      display: flex;
+      flex-direction: column-reverse;
+      margin-top: 14px;
+      gap: 10px;
+      font-size: 14px;
+    }
+  }
+</style>

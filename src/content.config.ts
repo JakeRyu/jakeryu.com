@@ -27,6 +27,20 @@ const blog = defineCollection({
 // Portfolio data: one YAML file per entry (or per skill group). The file name is the id.
 const yamlEntries = (collection: string) => glob({ pattern: "*.yaml", base: `${contentDir}/${collection}` });
 
+// A role with no `end` is the current one and runs to the build year.
+const experience = defineCollection({
+  loader: yamlEntries("experience"),
+  schema: z.object({
+    title: z.string(),
+    organisation: z.string(),
+    chapter: z.string(),
+    description: z.string(),
+    takeaway: z.object({ label: z.string(), text: z.string() }),
+    start: z.number().int(),
+    end: z.number().int().optional(),
+  }),
+});
+
 const projects = defineCollection({
   loader: yamlEntries("projects"),
   schema: ({ image }) =>
@@ -57,4 +71,4 @@ const certifications = defineCollection({
   schema: z.object({ title: z.string(), year: z.number().int() }),
 });
 
-export const collections = { blog, projects, skills, publications, certifications };
+export const collections = { blog, experience, projects, skills, publications, certifications };
