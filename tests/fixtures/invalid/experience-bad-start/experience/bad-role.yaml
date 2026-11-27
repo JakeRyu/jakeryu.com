@@ -1,0 +1,8 @@
+title: Bad Role
+organisation: Fixture Org
+chapter: fixture chapter
+description: Has a start year that is not a year.
+takeaway:
+  label: Learned
+  text: Nothing.
+start: last spring
