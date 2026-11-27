@@ -14,6 +14,7 @@ interface Props {
 }
 
 const { title, lang = "en" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.origin).href;
 ---
 
 <!doctype html>
@@ -36,6 +37,9 @@ const { title, lang = "en" } = Astro.props;
       })();
     </script>
     <ClientRouter />
+    <link rel="canonical" href={canonical} />
+    <!-- Cloudflare Web Analytics: cookie-free. It watches history changes itself, so it needs no data-astro-rerun after view transitions. -->
+    <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: site.analyticsToken })}></script>
   </head>
   <body>
     <SiteHeader />

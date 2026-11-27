@@ -66,7 +66,7 @@ describe("fonts", () => {
   it("are self-hosted: no built page or stylesheet requests a third-party URL", () => {
     for (const html of pages.map(([, path]) => page(path))) {
       const external = html
-        .querySelectorAll("link[href]")
+        .querySelectorAll("link[href]:not([rel=canonical])")
         .filter((link) => /^(https?:)?\/\//.test(link.getAttribute("href") ?? ""));
       expect(external).toHaveLength(0);
     }

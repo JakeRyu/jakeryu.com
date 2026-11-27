@@ -1,5 +1,6 @@
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import { rehypeExternalLinks } from "./src/plugins/rehype-external-links";
 import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
@@ -9,7 +10,7 @@ import { site } from "./src/site";
 export default defineConfig({
   site: site.origin,
   output: "static",
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
   markdown: {
     // Light and dark themes are emitted as CSS variables, so the page's own
     // colour scheme (system setting or the manual toggle) picks between them.
