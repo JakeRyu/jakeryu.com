@@ -1,0 +1,288 @@
+---
+import { getCollection } from "astro:content";
+import { site } from "../../site";
+import { listEntries } from "../../lib/translations";
+
+const posts = await listEntries();
+const projects = await getCollection("projects");
+const roles = await getCollection("experience");
+const publications = await getCollection("publications");
+const certifications = await getCollection("certifications");
+
+const plural = (count: number, noun: string) => `${count} ${noun}${count === 1 ? "" : "s"}`;
+const languages = [...new Set(posts.flatMap((entry) => entry.languages))].sort().join(" / ");
+const currentRole = roles.find((role) => role.data.end === undefined)?.data.title;
+
+// `pos` is the node's corner of the diagram. A node whose section is not built
+// (no content) is left out, so no link is ever dead.
+const nodes = [
+  { name: "writing", pos: "nw", verb: "writes", title: "Writing", href: "/#writing", detail: `${plural(posts.length, "post")} · ${languages}`, show: posts.length > 0 },
+  { name: "projects", pos: "ne", verb: "builds", title: "Projects", href: "/#projects", detail: plural(projects.length, "project"), show: projects.length > 0 },
+  { name: "experience", pos: "sw", verb: "worked at", title: "Experience", href: "/#experience", detail: `${plural(roles.length, "role")} since ${Math.min(...roles.map((role) => role.data.start))}`, show: roles.length > 0 },
+  { name: "publications", pos: "se", verb: "publishes", title: "Publications", href: "/#publications", detail: [publications.length > 0 && plural(publications.length, "publication"), certifications.length > 0 && plural(certifications.length, "cert")].filter(Boolean).join(" · "), show: publications.length + certifications.length > 0 },
+].filter((node) => node.show);
+
+// The diagram is a set of real links, so its accessible name carries the whole picture.
+const label = `System context: ${site.name} ${nodes.map((node) => `${node.verb} ${node.title} (${node.detail})`).join(", ")}`;
+---
+
+<nav data-diagram aria-label={label}>
+  <ul>
+    <li class="person">
+      <span class="stereo">«person»</span>
+      <span class="name">{site.name}</span>
+      {currentRole && <span class="role">{currentRole}</span>}
+    </li>
+    {nodes.map((node) => (
+      <li class={`node ${node.pos}`}>
+        <span class="verb-out" aria-hidden="true">{node.verb}</span>
+        <span class="h" data-connector aria-hidden="true"></span>
+        <span class="v" data-connector aria-hidden="true"></span>
+        <span class="dot" data-connector aria-hidden="true"></span>
+        <a data-node={node.name} href={node.href}>
+          <span class="stub" data-connector aria-hidden="true"></span>
+          <span class="stereo stereo-out" aria-hidden="true">«container»</span>
+          <span class="stereo verb-in" aria-hidden="true">{node.verb} →</span>
+          <span class="title">{node.title}</span>
+          <span class="detail" data-detail>{node.detail}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  ul {
+    position: relative;
+    width: 560px;
+    height: 460px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    position: absolute;
+    pointer-events: none;
+  }
+  .stereo {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .title {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .detail {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* The person node is inverted: --ink and --surface swap in dark mode, so it becomes a light fill there. */
+  .person {
+    left: 190px;
+    top: 180px;
+    width: 180px;
+    height: 100px;
+    padding: 16px 18px;
+    border-radius: 50px;
+    background: var(--ink);
+    color: var(--surface);
+    text-align: center;
+    pointer-events: auto;
+  }
+  .person .stereo {
+    color: light-dark(var(--accent), #b43e0b);
+  }
+  .person .name {
+    display: block;
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .person .role {
+    display: block;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  .node {
+    inset: 0;
+  }
+  .node a {
+    position: absolute;
+    width: 200px;
+    height: 96px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+    text-decoration: none;
+    pointer-events: auto;
+  }
+  .node a:hover .title {
+    color: var(--accent-text);
+  }
+  .nw a,
+  .sw a {
+    left: 0;
+  }
+  .ne a,
+  .se a {
+    left: 360px;
+  }
+  .nw a,
+  .ne a {
+    top: 0;
+  }
+  .sw a,
+  .se a {
+    top: 364px;
+  }
+
+  /* Dashed accent connectors: a horizontal run from the node, then a vertical run to the person. */
+  .h,
+  .v,
+  .dot {
+    position: absolute;
+  }
+  .h {
+    width: 80px;
+    border-top: var(--border-width) dashed var(--accent);
+  }
+  .v {
+    left: 279px;
+    height: 132px;
+    border-left: var(--border-width) dashed var(--accent);
+  }
+  .dot {
+    left: 275px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .nw .h {
+    left: 200px;
+  }
+  .ne .h {
+    left: 280px;
+  }
+  .nw .h,
+  .ne .h {
+    top: 47px;
+  }
+  .sw .h {
+    left: 200px;
+  }
+  .se .h {
+    left: 280px;
+  }
+  .sw .h,
+  .se .h {
+    top: 411px;
+  }
+  .nw .v,
+  .ne .v {
+    top: 48px;
+  }
+  .sw .v,
+  .se .v {
+    top: 280px;
+  }
+  .nw .dot,
+  .ne .dot {
+    top: 43px;
+  }
+  .sw .dot,
+  .se .dot {
+    top: 407px;
+  }
+  .verb-out {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .nw .verb-out {
+    left: 210px;
+    top: 20px;
+  }
+  .ne .verb-out {
+    left: 306px;
+    top: 20px;
+  }
+  .sw .verb-out {
+    left: 204px;
+    top: 420px;
+  }
+  .se .verb-out {
+    left: 296px;
+    top: 420px;
+  }
+  .verb-in,
+  .stub {
+    display: none;
+  }
+
+  /* Below tablet width the diagram becomes a vertical spine: Jake on top, the nodes hanging off a dashed line. */
+  @media (max-width: 767px) {
+    ul {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+      height: auto;
+    }
+    li {
+      position: static;
+    }
+    .person {
+      width: 220px;
+      height: auto;
+      padding: 14px 20px;
+      border-radius: 40px;
+      text-align: left;
+    }
+    .person .name {
+      font-size: 18px;
+    }
+    .node {
+      margin-left: 32px;
+      padding: 14px 0 0 28px;
+      border-left: var(--border-width) dashed var(--accent);
+    }
+    .node a {
+      position: relative;
+      left: auto;
+      top: auto;
+      display: block;
+      width: auto;
+      height: auto;
+      padding: 12px 16px;
+    }
+    .h,
+    .v,
+    .dot,
+    .verb-out,
+    .stereo-out {
+      display: none;
+    }
+    .verb-in {
+      display: block;
+    }
+    .stub {
+      display: block;
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      width: 28px;
+      border-top: var(--border-width) dashed var(--accent);
+    }
+    .title {
+      font-size: 17px;
+    }
+  }
+</style>

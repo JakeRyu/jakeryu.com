@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
 import HeroLinks from "../components/home/HeroLinks.astro";
+import SystemDiagram from "../components/home/SystemDiagram.astro";
+import LatestPosts from "../components/home/LatestPosts.astro";
 import TimelineSection from "../components/home/TimelineSection.astro";
 import ProjectsSection from "../components/home/ProjectsSection.astro";
 import SkillsSection from "../components/home/SkillsSection.astro";
@@ -9,13 +11,74 @@ import PublicationsSection from "../components/home/PublicationsSection.astro";
 ---
 
 <Base>
-  <h1>{site.name}</h1>
-  <p>{site.slogan}</p>
-  <HeroLinks />
+  <section class="hero">
+    <div class="intro">
+      <p class="eyebrow">C4 · SYSTEM CONTEXT — JAKERYU.COM</p>
+      <h1>{site.name}</h1>
+      <p class="slogan">{site.slogan}</p>
+      <HeroLinks />
+    </div>
+    <SystemDiagram />
+  </section>
 
   <!-- Section slots: each ticket adds its own component here, in page order. -->
+  <LatestPosts />
   <ProjectsSection />
-  <TimelineSection />
   <SkillsSection />
+  <TimelineSection />
   <PublicationsSection />
 </Base>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 56px;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 88px var(--page-padding) 96px;
+  }
+  .intro {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+  .eyebrow {
+    margin: 0 0 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--accent-text);
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(40px, 5.6vw, 68px);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+  .slogan {
+    margin: 24px 0 0;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--muted-strong);
+  }
+  @media (max-width: 767px) {
+    .hero {
+      gap: 40px;
+      padding: 48px 20px 40px;
+    }
+    .eyebrow {
+      margin-bottom: 18px;
+      font-size: 11px;
+    }
+    h1 {
+      font-size: 40px;
+      line-height: 1.06;
+    }
+    .slogan {
+      margin-top: 18px;
+      font-size: 18px;
+    }
+  }
+</style>
