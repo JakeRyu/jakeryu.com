@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse, type HTMLElement } from "node-html-parser";
 import { inject } from "vitest";
@@ -7,4 +7,13 @@ import { inject } from "vitest";
 export function page(urlPath: string): HTMLElement {
   const file = join(inject("outDir"), urlPath, urlPath.endsWith(".html") ? "" : "index.html");
   return parse(readFileSync(file, "utf8"));
+}
+
+// Reads every built file with the given extension (e.g. ".css") and returns
+// the contents, for asserting on assets rather than pages.
+export function filesWithExtension(extension: string): string[] {
+  const root = inject("outDir");
+  return readdirSync(root, { recursive: true, encoding: "utf8" })
+    .filter((name) => name.endsWith(extension))
+    .map((name) => readFileSync(join(root, name), "utf8"));
 }

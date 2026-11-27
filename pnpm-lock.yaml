@@ -185,6 +185,15 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/geist':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/geist-mono':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/noto-sans-kr':
+        specifier: ^5.3.1
+        version: 5.3.1
       astro:
         specifier: ^7.4.13
         version: 7.4.13(@types/node@24.19.4)(yaml@2.9.1)
@@ -460,6 +469,15 @@ packages:
 
   '@emnapi/wasi-threads@2.2.0':
     resolution: {integrity: sha512-JP7OYH38Q7+pyTAe14raZHLQIK7BDKbdwji+Xi3pcd/6QkJYQH3SX4wu6EplGrGJWRepoNzedfm0G3B9Z4e9Rw==}
+
+  '@fontsource-variable/geist-mono@5.3.0':
+    resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
+
+  '@fontsource-variable/geist@5.3.0':
+    resolution: {integrity: sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==}
+
+  '@fontsource-variable/noto-sans-kr@5.3.1':
+    resolution: {integrity: sha512-f5aty6Qgk2LVU5TjCtXHxiYHqUWYW8f75ll0Chn8ucCqoOlIomcACUwf1V47yUt6wTdWZiGr3dcbQk+zlOspMA==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -2297,6 +2315,12 @@ snapshots:
     dependencies:
       tslib: 2.9.1
     optional: true
+
+  '@fontsource-variable/geist-mono@5.3.0': {}
+
+  '@fontsource-variable/geist@5.3.0': {}
+
+  '@fontsource-variable/noto-sans-kr@5.3.1': {}
 
   '@img/colour@1.1.0':
     optional: true

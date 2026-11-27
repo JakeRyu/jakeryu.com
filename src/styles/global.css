@@ -1,0 +1,96 @@
+/* Design tokens for direction F, "System Map". Each colour is a light/dark pair. */
+:root {
+  color-scheme: light dark;
+
+  --ground: light-dark(#f3f5f7, #0e151c);
+  --dot: light-dark(#c9d1da, #26323d);
+  --surface: light-dark(#ffffff, #16202a);
+  --ink: light-dark(#14202b, #e6edf3);
+  --muted: light-dark(#566573, #9aa8b6);
+  --muted-strong: light-dark(#3b4a58, #b8c4d0);
+  --hairline: light-dark(#dce2e8, #26323d);
+  --border: light-dark(#14202b, #5c6e80);
+  --accent: light-dark(#e0561b, #ff7a3d);
+  --accent-text: light-dark(#0f766e, #2dd4bf);
+
+  /* HTTP-method badges: one background/foreground pair per verb. */
+  --get-bg: light-dark(#d7f0ec, #123d38);
+  --get-fg: light-dark(#0b5d57, #7fe3d3);
+  --post-bg: light-dark(#fde3d6, #4a2412);
+  --post-fg: light-dark(#8a2f0a, #ffb088);
+  --put-bg: light-dark(#dde7fb, #1b2c52);
+  --put-fg: light-dark(#1e3f8a, #a9c1ff);
+  --patch-bg: light-dark(#eee4fb, #33204f);
+  --patch-fg: light-dark(#5b2a8f, #d3b5ff);
+  --delete-bg: light-dark(#f8dcdc, #4a1c1c);
+  --delete-fg: light-dark(#8a1f1f, #ffa8a8);
+
+  /* Geist for UI and body, Geist Mono for metadata and code, Noto Sans KR for Hangul. */
+  --font-sans: "Geist Variable", "Noto Sans KR Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", "Noto Sans KR Variable", ui-monospace, monospace;
+
+  --border-width: 1.5px;
+  --radius-s: 8px;
+  --radius-l: 14px;
+  --page-width: 1200px;
+  --page-padding: 40px;
+}
+
+/* A stored choice (set by the inline head script) overrides the system setting. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ground);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+:lang(ko) {
+  word-break: keep-all;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: var(--accent-text);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

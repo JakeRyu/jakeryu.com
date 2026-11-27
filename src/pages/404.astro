@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found">
+  <div class="not-found">
+    <p class="label">404 · NOT FOUND</p>
+    <h1>This page doesn't exist</h1>
+    <p>The link may be old or mistyped.</p>
+    <a class="button" href="/">Back to home</a>
+  </div>
+</Base>
+
+<style>
+  .not-found {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 96px var(--page-padding);
+  }
+  .label {
+    margin: 0 0 18px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--accent-text);
+  }
+  h1 {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+  p {
+    color: var(--muted-strong);
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--radius-s);
+    background: var(--ink);
+    color: var(--ground);
+    font-weight: 500;
+    text-decoration: none;
+  }
+</style>
