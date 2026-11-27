@@ -4,6 +4,8 @@ import { page } from "./support/built-site";
 const languageLink = (slug: string) => page(`/blog/${slug}/`).querySelector("[data-translation-link]");
 const alternates = (slug: string) => page(`/blog/${slug}/`).querySelectorAll('link[rel="alternate"][hreflang]');
 
+const thisPost = (slug: string) => page(`/blog/${slug}/`).querySelector(".translation .this .title");
+
 describe("post language link", () => {
   it("links the English post to its Korean translation", () => {
     expect(languageLink("http-verbs")?.getAttribute("href")).toBe("/blog/http-verbs-ko/");
@@ -35,5 +37,21 @@ describe("post language link", () => {
   it("gives untranslated posts no alternate metadata", () => {
     expect(alternates("hello-en")).toHaveLength(0);
     expect(alternates("korean-only")).toHaveLength(0);
+  });
+
+  it("shows the English post's title in the «this post» node", () => {
+    expect(thisPost("http-verbs")?.textContent?.trim()).toBe("HTTP verbs");
+  });
+
+  it("marks the «this post» title of the English post as English", () => {
+    expect(thisPost("http-verbs")?.getAttribute("lang")).toBe("en");
+  });
+
+  it("shows the Korean post's title in the «this post» node", () => {
+    expect(thisPost("http-verbs-ko")?.textContent?.trim()).toBe("HTTP 동사");
+  });
+
+  it("marks the «this post» title of the Korean post as Korean", () => {
+    expect(thisPost("http-verbs-ko")?.getAttribute("lang")).toBe("ko");
   });
 });
