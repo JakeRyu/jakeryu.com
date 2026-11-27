@@ -1,0 +1,59 @@
+---
+import { site } from "../../site";
+
+const links = [
+  { label: "GitHub", href: site.social.github },
+  { label: "X", href: site.social.x },
+  { label: "Email", href: site.social.email },
+];
+---
+
+<div class="links">
+  <a class="primary" href={site.cv} download>Download CV</a>
+  {links.map((link) => <a class="secondary" href={link.href}>{link.label}</a>)}
+</div>
+
+<style>
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding) 56px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: var(--radius-s);
+    text-decoration: none;
+  }
+  .primary {
+    background: var(--ink);
+    color: var(--ground);
+  }
+  .secondary {
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    color: var(--ink);
+  }
+  a:hover {
+    color: var(--accent-text);
+  }
+  .primary:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 767px) {
+    .links {
+      padding: 0 20px 40px;
+      gap: 10px;
+    }
+    a {
+      padding: 0 18px;
+    }
+  }
+</style>

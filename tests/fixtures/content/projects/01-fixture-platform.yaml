@@ -1,0 +1,6 @@
+title: Fixture Platform
+description: A fixture project that exists only to exercise the home page.
+role: Fixture lead
+stack:
+  - Fixture.NET
+  - FixtureDB

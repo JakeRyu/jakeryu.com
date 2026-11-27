@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import HomeSection from "./HomeSection.astro";
+
+// Newest first, publications before certifications.
+const newestFirst = <T extends { data: { year: number } }>(entries: T[]) =>
+  entries.sort((a, b) => b.data.year - a.data.year);
+const cards = [
+  ...newestFirst(await getCollection("publications")).map(({ data }) => ({ kind: "publication", ...data })),
+  ...newestFirst(await getCollection("certifications")).map(({ data }) => ({ kind: "certification", ...data })),
+];
+---
+
+{
+  cards.length > 0 && (
+    <HomeSection id="publications" title="Publications & certifications">
+      <div class="grid">
+        {cards.map((card) => (
+          <div class="card">
+            <p class="meta">
+              «{card.kind}» · {card.year}
+            </p>
+            <p class="title">{card.title}</p>
+          </div>
+        ))}
+      </div>
+    </HomeSection>
+  )
+}
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  p {
+    margin: 0;
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .title {
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  @media (max-width: 767px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .card {
+      padding: 14px 16px;
+    }
+  }
+</style>
