@@ -1,0 +1,8 @@
+{
+  "name": "jakeryu-com",
+  "compatibility_date": "2026-11-27",
+  // Purely static: Workers Static Assets serves the build output, no Worker script.
+  "assets": {
+    "directory": "./dist"
+  }
+}
