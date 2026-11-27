@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filesWithExtension, page } from "./support/built-site";
+import { fileExists, filesWithExtension, page } from "./support/built-site";
 
 const pages = [
   ["home", "/"],
@@ -96,5 +96,13 @@ describe("typography and motion", () => {
 
   it("disables animation and transitions under prefers-reduced-motion", () => {
     expect(css()).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*{[^@]*animation:\s*none/);
+  });
+});
+
+describe.each(pages)("favicon on the %s page", (_name, path) => {
+  it("declares an icon that exists in the build", () => {
+    const href = page(path).querySelector('head link[rel="icon"]')?.getAttribute("href");
+    expect(href).toBeTruthy();
+    expect(fileExists(href!)).toBe(true);
   });
 });
