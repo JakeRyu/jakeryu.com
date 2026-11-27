@@ -1,0 +1,162 @@
+---
+import Base from "../../layouts/Base.astro";
+import { listEntries } from "../../lib/translations";
+
+const entries = await listEntries();
+const isoDate = (date: Date) => date.toISOString().slice(0, 10);
+const filters = [
+  { label: "All", language: "all" },
+  { label: "English", language: "en" },
+  { label: "한국어", language: "ko" },
+];
+---
+
+<Base title="Writing">
+  <div class="wrap">
+    <h1>Writing <span class="sub">/ endpoint reference</span></h1>
+    <!-- Revealed by the script below: without JavaScript the filter does nothing. -->
+    <div class="filters" data-filters hidden>
+      {filters.map(({ label, language }) => (
+        <button type="button" data-filter={language} aria-pressed={language === "all"}>{label}</button>
+      ))}
+    </div>
+    <ul class="list">
+      {entries.map(({ post, languages }) => (
+        <li data-entry data-languages={languages.join(" ")}>
+          <a href={`/blog/${post.id}/`}>
+            <span class="badge">GET</span>
+            <span class="path">/blog/{post.id}</span>
+            <span class="title" lang={post.data.language}>{post.data.title}</span>
+            <span class="meta">{languages.join(" · ")} · <time datetime={isoDate(post.data.date)}>{isoDate(post.data.date)}</time></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<script>
+  function reveal() {
+    document.querySelector("[data-filters]")?.removeAttribute("hidden");
+  }
+  reveal();
+  document.addEventListener("astro:page-load", reveal);
+
+  // Delegated, so it keeps working after view-transition page swaps.
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest<HTMLElement>("[data-filter]");
+    if (!button) return;
+    const language = button.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+    document.querySelectorAll<HTMLElement>("[data-entry]").forEach((entry) => {
+      entry.hidden = language !== "all" && !entry.dataset.languages?.split(" ").includes(language ?? "");
+    });
+  });
+</script>
+
+<style>
+  .wrap {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 56px var(--page-padding) 104px;
+  }
+  h1 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .filters[hidden] {
+    display: none;
+  }
+  .filters button {
+    padding: 4px 14px;
+    border: var(--border-width) solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .filters button[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--surface);
+  }
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  li {
+    border-bottom: 1px solid var(--hairline);
+  }
+  li:last-child {
+    border-bottom: 0;
+  }
+  li[hidden] {
+    display: none;
+  }
+  a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    padding: 20px 24px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  a:hover .title {
+    color: var(--accent-text);
+  }
+  .badge {
+    flex: 0 0 auto;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: var(--get-bg);
+    color: var(--get-fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .path {
+    flex: 0 0 280px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .title {
+    flex: 1 1 320px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .meta {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 767px) {
+    .wrap {
+      padding: 24px 16px 64px;
+    }
+    .path {
+      flex-basis: 100%;
+    }
+  }
+</style>
