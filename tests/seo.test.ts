@@ -64,3 +64,26 @@ describe("analytics beacon", () => {
     expect(page("/").innerHTML).not.toContain("document.cookie");
   });
 });
+
+describe("meta description", () => {
+  const descriptions = (path: string) =>
+    page(path)
+      .querySelectorAll('meta[name="description"]')
+      .map((meta) => meta.getAttribute("content"));
+
+  it("is present exactly once and non-empty on every page", () => {
+    for (const path of [...builtPaths(), "/404.html"]) {
+      const found = descriptions(path);
+      expect(found, path).toHaveLength(1);
+      expect(found[0], path).toBeTruthy();
+    }
+  });
+
+  it("is the post's own description when it has one", () => {
+    expect(descriptions("/blog/hello-en/")).toEqual(["An English post used by the built-site tests."]);
+  });
+
+  it("falls back to the site description for a post without one", () => {
+    expect(descriptions("/blog/korean-only/")).toEqual([`${site.name}: ${site.slogan}`]);
+  });
+});
