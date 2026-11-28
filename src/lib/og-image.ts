@@ -60,14 +60,15 @@ const frame = (...children: Node[]) =>
   el("div", { display: "flex", flexDirection: "column", justifyContent: "space-between", width, height, boxSizing: "border-box", padding: "72px 80px", background: ground, borderLeft: `16px solid ${accent}`, fontFamily: "Geist" }, children);
 
 // A post's image: its title in the light-theme palette, with the site name.
-// Korean posts set the title in Noto Sans KR.
+// Korean posts set the title in Noto Sans KR, break between words (like the page's
+// word-break: keep-all) and balance the lines so no word is left alone on the last one.
 export function postImage(title: string, language: "en" | "ko"): Promise<Buffer> {
   const noto = language === "ko" ? notoFor(title) : [];
   const titleFamily = noto.length > 0 ? noto.map((font) => `"${font.name}"`).join(", ") : "Geist";
   // Long titles step down in size so they stay inside the frame.
   const fontSize = title.length > 90 ? 40 : title.length > 50 ? 52 : 72;
   const tree = frame(
-    el("div", { display: "flex", fontFamily: titleFamily, fontSize, fontWeight: 700, lineHeight: 1.25, letterSpacing: -1.5, color: ink, overflow: "hidden" }, title),
+    el("div", { display: "flex", fontFamily: titleFamily, fontSize, fontWeight: 700, lineHeight: 1.25, letterSpacing: -1.5, color: ink, overflow: "hidden", ...(language === "ko" && { wordBreak: "keep-all", textWrap: "balance" }) }, title),
     el("div", { display: "flex", fontSize: 36, fontWeight: 700, color: accent }, site.name),
   );
   return render(tree, [...noto, ...geist]);
