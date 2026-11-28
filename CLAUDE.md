@@ -20,7 +20,7 @@ Jake Ryu's personal site, jakeryu.com. It is a static Astro site that replaces t
 - **Test builds are production builds:** `buildSite()` sets `NODE_ENV=production`, because Vitest sets `NODE_ENV=test`, which Astro would treat as a non-production build (drafts included).
 - **Translations:** all translation-group logic lives in `src/lib/translations.ts`. Pages never group posts themselves.
 - **Dev server:** `CONTENT_DIR=$PWD/tests/fixtures/content pnpm dev` shows the fixture posts and portfolio data. When several agents run at once, give each its own port.
-- **Deployment:** Cloudflare Workers Static Assets (`wrangler.jsonc`), built from Git: `main` is production, other branches get preview URLs.
+- **Deployment:** Cloudflare Workers Static Assets (`wrangler.jsonc`), built from Git: `main` is production, other branches get preview URLs. The Cloudflare dashboard settings that live outside the repository (DNS, redirect rule, Always Use HTTPS, analytics, Search Console) are in `docs/operations.md`.
 - **Done means checked by eye:** visual fidelity (light, dark, mobile) is not automated; say in the PR what was and was not checked in a browser.
 
 ## Agent skills
