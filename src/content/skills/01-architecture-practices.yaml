@@ -1,0 +1,13 @@
+group: "Architecture & Practices"
+items:
+  - "Clean Architecture"
+  - "DDD"
+  - "CQRS"
+  - "Event-driven Architecture"
+  - "Microservices"
+  - "API Design"
+  - "Solution Architecture"
+  - "Legacy Modernisation"
+  - "TDD"
+  - "BDD"
+  - "Feature Flags"

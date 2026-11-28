@@ -1,0 +1,10 @@
+group: "Frontend"
+items:
+  - "React"
+  - "TypeScript"
+  - "Next.js"
+  - "Tailwind"
+  - "Jest"
+  - "React Testing Library"
+  - "Cypress"
+  - "Accessibility"

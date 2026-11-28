@@ -1,0 +1,12 @@
+group: "Cloud & DevOps"
+items:
+  - "Azure Functions"
+  - "Azure Data Factory"
+  - "Azure App Configuration"
+  - "Azure Key Vault"
+  - "Azure DevOps"
+  - "GitHub Actions"
+  - "Terraform"
+  - "Docker"
+  - "AWS"
+  - "CI/CD"
