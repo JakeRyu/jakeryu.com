@@ -166,7 +166,7 @@ const related = await relatedTo(post);
     line-height: 1.6;
   }
   .prose :global(th) {
-    padding: 12px 16px;
+    padding: 8px 12px;
     text-align: left;
     white-space: nowrap;
     background: var(--ground);
@@ -177,8 +177,16 @@ const related = await relatedTo(post);
     color: var(--muted);
   }
   .prose :global(td) {
-    padding: 12px 16px;
+    padding: 8px 12px;
+    vertical-align: top;
+    font-size: 13px;
+    line-height: 1.5;
     border-bottom: 1px solid var(--hairline);
+  }
+  /* The last column usually holds the long text; without a floor the short columns
+     squeeze it and every row grows very tall. A wider table scrolls inside its box. */
+  .prose :global(td:last-child) {
+    min-width: 20rem;
   }
   .prose :global(tr:last-child td) {
     border-bottom: 0;

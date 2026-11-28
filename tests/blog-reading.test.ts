@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { page } from "./support/built-site";
+import { filesWithExtension, page } from "./support/built-site";
 
 const post = () => page("/blog/reading-features/");
 
@@ -59,6 +59,12 @@ describe("post reading features", () => {
   it("wraps tables in a horizontally scrolling container", () => {
     const wrapper = post().querySelector("article .table-scroll");
     expect(wrapper?.querySelector("table")?.tagName).toBe("TABLE");
+  });
+
+  it("keeps table rows compact: top-aligned cells and a floor on the last column's width", () => {
+    const css = filesWithExtension(".css").join("\n");
+    expect(css).toMatch(/td\b[^{}]*\{[^}]*vertical-align:\s*top/);
+    expect(css).toMatch(/td:last-child[^{}]*\{[^}]*min-width:\s*20rem/);
   });
 
   it("highlights code with paired light and dark Shiki themes", () => {
