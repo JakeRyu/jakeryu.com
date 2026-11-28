@@ -46,6 +46,19 @@ describe("real experience", () => {
     expect(section("experience")).toContain(`${start} —`);
   });
 
+  it("labels every role's start year on the axis, with no two labels on a row closer than 9%", () => {
+    const ticks = home.querySelectorAll("#experience .axis .tick").map((tick) => ({
+      text: tick.text.trim(),
+      row: Number(tick.getAttribute("data-row") ?? 0),
+      left: parseFloat(/left:\s*([\d.]+)%/.exec(tick.getAttribute("style") ?? "")?.[1] ?? "100"),
+    }));
+    expect(ticks.map((tick) => tick.text)).toEqual(expect.arrayContaining(roles.map(([, , start]) => String(start))));
+    for (const row of [0, 1]) {
+      const lefts = ticks.filter((tick) => tick.row === row).map((tick) => tick.left).sort((a, b) => a - b);
+      lefts.slice(1).forEach((left, i) => expect(left - lefts[i]).toBeGreaterThanOrEqual(9));
+    }
+  });
+
   it("marks only the last role, Lead Developer, as current", () => {
     const current = home.querySelectorAll("#experience .segment[data-current]");
     expect(current).toHaveLength(1);
