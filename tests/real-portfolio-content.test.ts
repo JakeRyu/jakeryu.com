@@ -94,11 +94,11 @@ describe("real projects", () => {
 });
 
 describe("real skills", () => {
-  it.each(["C#", "Clean Architecture", "TypeScript", "Cypress", "Claude Code", "Kubernetes"])("lists %s", (skill) => {
+  it.each(["C#", "Clean Architecture", "TypeScript", "Cypress", "Context Engineering", "Microservices"])("lists %s", (skill) => {
     expect(section("skills")).toContain(skill);
   });
 
-  it.each(["Backend", "Frontend", "AI Tools", "Areas of interest"])("has a %s group", (group) => {
+  it.each(["Architecture & Practices", "AI-Augmented Engineering", "Backend", "Data & Messaging", "Cloud & DevOps", "Frontend"])("has a %s group", (group) => {
     expect(section("skills")).toContain(group);
   });
 });

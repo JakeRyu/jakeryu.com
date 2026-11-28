@@ -1,0 +1,12 @@
+group: "Backend"
+items:
+  - "C#"
+  - ".NET"
+  - "ASP.NET Core"
+  - "MediatR"
+  - "FluentValidation"
+  - "xUnit"
+  - "NUnit"
+  - "Moq"
+  - "SpecFlow"
+  - "Serilog"
