@@ -22,9 +22,18 @@ const roles = entries.map(({ data }, index) => {
   };
 });
 
-// Year axis: a label under each start year, skipping any that would crowd the previous one or "now".
-const minGap = 6;
-const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[index - 1].left >= minGap && 100 - role.left >= minGap));
+// Year axis: a label under each start year. A label too close to the previous one on its row
+// (or to "now", which sits at the right edge of the first row) drops to a second row; if that is
+// crowded too it is left out.
+const minGap = 9;
+const rowLasts = [100, -Infinity];
+const ticks = roles.flatMap((role) => {
+  const row = rowLasts.findIndex((last) => Math.abs(role.left - last) >= minGap);
+  if (row === -1) return [];
+  rowLasts[row] = role.left;
+  return [{ ...role, row }];
+});
+const rowCount = Math.max(1, ...ticks.map((tick) => tick.row + 1));
 ---
 
 {
@@ -38,9 +47,9 @@ const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[in
             </span>
           ))}
         </div>
-        <div class="axis" aria-hidden="true">
+        <div class="axis" aria-hidden="true" style={`--rows: ${rowCount}`}>
           {ticks.map((role) => (
-            <span class:list={["tick", { first: role.left === 0 }]} style={`left: ${role.left}%`}>
+            <span class:list={["tick", { first: role.left === 0 }]} style={`left: ${role.left}%; --row: ${role.row}`} data-row={role.row}>
               {role.start}
             </span>
           ))}
@@ -104,7 +113,8 @@ const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[in
   }
   .axis {
     position: relative;
-    height: 24px;
+    --row-height: 16px;
+    height: calc(8px + var(--rows) * var(--row-height));
     margin-top: 6px;
     font-family: var(--font-mono);
     font-size: 11px;
@@ -112,6 +122,7 @@ const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[in
   }
   .tick {
     position: absolute;
+    top: calc(var(--row, 0) * var(--row-height));
     transform: translateX(-50%);
   }
   .tick.first {
@@ -160,7 +171,8 @@ const ticks = roles.filter((role, index) => index === 0 || (role.left - roles[in
       font-size: 11px;
     }
     .axis {
-      height: 20px;
+      --row-height: 14px;
+      height: calc(6px + var(--rows) * var(--row-height));
       margin-top: 4px;
       font-size: 10px;
     }
