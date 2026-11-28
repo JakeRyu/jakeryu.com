@@ -5,6 +5,10 @@ const writing = () => page("/").querySelector("#writing");
 const rows = () => writing()?.querySelectorAll("[data-post]") ?? [];
 const hrefs = () => rows().map((row) => row.querySelector("a")?.getAttribute("href"));
 
+// The latest-* fixtures are dated 9999-12-29 to 9999-12-31 so they are always among the
+// five newest posts, however many other fixtures exist. Keep other fixtures' dates earlier.
+const row = (href: string) => rows().find((r) => r.querySelector("a")?.getAttribute("href") === href);
+
 describe("home page latest posts order and limit", () => {
   const dates = () => rows().map((row) => row.querySelector("time")?.getAttribute("datetime") ?? "");
 
@@ -19,8 +23,7 @@ describe("home page latest posts order and limit", () => {
   });
 
   it("shows the languages each post is available in", () => {
-    const row = rows().find((r) => r.querySelector("a")?.getAttribute("href") === "/blog/http-verbs/");
-    expect(row?.querySelector(".meta")?.text).toContain("en · ko");
+    expect(row("/blog/latest-pair/")?.querySelector(".meta")?.text).toContain("en · ko");
   });
 });
 
@@ -52,21 +55,21 @@ describe("home page section order", () => {
 
 describe("home page latest posts drafts", () => {
   it("leaves out draft posts", () => {
-    expect(hrefs()).not.toContain("/blog/draft-post/");
-    expect(writing()?.text).not.toContain("An unfinished post");
+    expect(hrefs()).not.toContain("/blog/latest-draft/");
+    expect(writing()?.text).not.toContain("Latest draft");
   });
 });
 
 describe("home page latest posts", () => {
   it("lists a post as a GET /blog/<slug> row linking to the post, with its title", () => {
-    const row = rows().find((r) => r.querySelector("a")?.getAttribute("href") === "/blog/hello-en/");
-    expect(row?.querySelector(".badge")?.text.trim()).toBe("GET");
-    expect(row?.text).toContain("/blog/hello-en");
-    expect(row?.text).toContain("Hello from the fixture");
+    const plain = row("/blog/latest-plain/");
+    expect(plain?.querySelector(".badge")?.text.trim()).toBe("GET");
+    expect(plain?.text).toContain("/blog/latest-plain");
+    expect(plain?.text).toContain("Latest plain post");
   });
 
   it("shows a translated pair once, represented by the English post, with both languages", () => {
-    expect(hrefs().filter((href) => href === "/blog/http-verbs/").length).toBe(1);
-    expect(hrefs()).not.toContain("/blog/http-verbs-ko/");
+    expect(hrefs().filter((href) => href === "/blog/latest-pair/").length).toBe(1);
+    expect(hrefs()).not.toContain("/blog/latest-pair-ko/");
   });
 });
